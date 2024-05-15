@@ -4,6 +4,5 @@ export class CreateUserDto {
     email: string;
     password: string;
     dateOfBirth: string;
-    rememberMe: boolean;
   }
   
