@@ -1,10 +1,8 @@
-// src/user/user.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from '../create-user.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -17,7 +15,7 @@ export class UserService {
     const user = new User();
     user.username = createUserDto.username;
     user.email = createUserDto.email;
-    user.password = await bcrypt.hash(createUserDto.password, 10); // Хешування пароля
+    user.password = createUserDto.password; // Передаємо пароль без хешування
     user.date = createUserDto.dateOfBirth;
     return this.usersRepository.save(user);
   }
