@@ -13,11 +13,11 @@ export class PostService {
   ) {}
 
   findAll(): Promise<Post[]> {
-    return this.postsRepository.find({ relations: ['user'] });
+    return this.postsRepository.find({ relations: ['user', 'comments'] });
   }
 
   findOne(post_id: number): Promise<Post> {
-    return this.postsRepository.findOneBy({ post_id });
+    return this.postsRepository.findOne({ where: { post_id }, relations: ['user', 'comments'] });
   }
 
   async create(createPostDto: CreatePostDto): Promise<Post> {

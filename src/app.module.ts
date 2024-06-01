@@ -3,8 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
+import { Comment } from './comment.entity';
 import { PostModule } from './post.module';
 import { Post } from './post.entity';
+import { CommentModule } from './comment.module';
 
 @Module({
   imports: [
@@ -15,12 +17,14 @@ import { Post } from './post.entity';
       username: 'root',
       password: 'password',
       database: 'db',
-      entities: [User, Post],
+      entities: [User, Post, Comment],
       synchronize: true,
     }),
     AuthModule,
     UserModule,
     PostModule,
+    CommentModule
   ],
+  providers: [], 
 })
 export class AppModule {}
