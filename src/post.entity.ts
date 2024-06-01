@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { User } from './user/user.entity';
+import { Comment } from './comment.entity';
 
-@Entity()
+@Entity('Posts')
 export class Post {
   @PrimaryGeneratedColumn()
   post_id: number;
@@ -14,6 +16,10 @@ export class Post {
   @Column({ default: 0 })
   likes: number;
 
-  @Column()
-  user_id: number;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @OneToMany(() => Comment, comment => comment.post)
+  comments: Comment[];
 }

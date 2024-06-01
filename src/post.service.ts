@@ -9,34 +9,34 @@ import { UpdatePostDto } from './update-post.dto';
 export class PostService {
   constructor(
     @InjectRepository(Post)
-    private postRepository: Repository<Post>,
+    private postsRepository: Repository<Post>,
   ) {}
 
-  async findAll(): Promise<Post[]> {
-    return this.postRepository.find();
+  findAll(): Promise<Post[]> {
+    return this.postsRepository.find({ relations: ['user'] });
   }
 
-  async findOne(post_id: number): Promise<Post> {
-    return this.postRepository.findOneBy({ post_id });
+  findOne(post_id: number): Promise<Post> {
+    return this.postsRepository.findOneBy({ post_id });
   }
 
   async create(createPostDto: CreatePostDto): Promise<Post> {
-    const post = this.postRepository.create(createPostDto);
-    return this.postRepository.save(post);
+    const post = this.postsRepository.create(createPostDto);
+    return this.postsRepository.save(post);
   }
 
   async update(post_id: number, updatePostDto: UpdatePostDto): Promise<Post> {
-    await this.postRepository.update(post_id, updatePostDto);
-    return this.postRepository.findOneBy({ post_id });
+    await this.postsRepository.update(post_id, updatePostDto);
+    return this.findOne(post_id);
   }
 
   async remove(post_id: number): Promise<void> {
-    await this.postRepository.delete(post_id);
+    await this.postsRepository.delete(post_id);
   }
 
   async addLike(post_id: number): Promise<void> {
-    const post = await this.postRepository.findOneBy({ post_id });
+    const post = await this.findOne(post_id);
     post.likes += 1;
-    await this.postRepository.save(post);
+    await this.postsRepository.save(post);
   }
 }

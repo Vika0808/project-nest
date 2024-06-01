@@ -15,7 +15,7 @@ export class UserService {
     const user = new User();
     user.username = createUserDto.username;
     user.email = createUserDto.email;
-    user.password = createUserDto.password; // Передаємо пароль без хешування
+    user.password = createUserDto.password; 
     user.date = createUserDto.dateOfBirth;
     return this.usersRepository.save(user);
   }

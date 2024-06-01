@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'secretKey', // Секретний ключ, зберігайте в конфігурації
+      secret: 'secretKey', 
       signOptions: { expiresIn: '1h' },
     }),
   ],

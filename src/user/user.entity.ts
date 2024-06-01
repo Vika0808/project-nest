@@ -13,8 +13,7 @@ export class User {
 
   @Column()
   password: string;
- 
+
   @Column({ type: 'date' })
   date: string;
 }
-
