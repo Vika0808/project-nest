@@ -7,6 +7,8 @@ import { Comment } from './comment/comment.entity';
 import { PostModule } from './post/post.module';
 import { Post } from './post/post.entity';
 import { CommentModule } from './comment/comment.module';
+import { SubscriptionModule } from './subscription/subscription.module';
+import { Subscription } from './subscription/subscription.entity';
 
 @Module({
   imports: [
@@ -17,13 +19,14 @@ import { CommentModule } from './comment/comment.module';
       username: 'root',
       password: 'password',
       database: 'db',
-      entities: [User, Post, Comment],
+      entities: [User, Post, Comment, Subscription], 
       synchronize: true,
     }),
     AuthModule,
     UserModule,
     PostModule,
-    CommentModule
+    CommentModule,
+    SubscriptionModule, // Додайте підключення модуля підписок
   ],
   providers: [], 
 })
