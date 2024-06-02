@@ -1,14 +1,19 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-    constructor (private userService: UserService){
-        
-    }
+  constructor(private readonly userService: UserService) {}
 
-    @Post()
-  async getUsers () {
+  @UseGuards(AuthGuard('jwt')) // Застосовуємо guard для захисту маршруту
+  @Get()
+  async getCurrentUser(@Req() req) {
+    return req.user; // Повертаємо дані поточного користувача
+  }
+
+  @Get('all') // Маршрут для отримання всіх користувачів (необов'язково)
+  async getUsers() {
     return this.userService.getUsers();
   }
 }

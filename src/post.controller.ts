@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, BadRequestException } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './create-post.dto';
 import { UpdatePostDto } from './update-post.dto';
@@ -14,7 +14,11 @@ export class PostController {
 
   @Get(':id')
   findOne(@Param('id') post_id: string) {
-    return this.postService.findOne(+post_id);
+    const id = parseInt(post_id, 10);
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid post ID');
+    }
+    return this.postService.findOne(id);
   }
 
   @Post()
@@ -24,16 +28,28 @@ export class PostController {
 
   @Put(':id')
   update(@Param('id') post_id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+post_id, updatePostDto);
+    const id = parseInt(post_id, 10);
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid post ID');
+    }
+    return this.postService.update(id, updatePostDto);
   }
 
   @Delete(':id')
   remove(@Param('id') post_id: string) {
-    return this.postService.remove(+post_id);
+    const id = parseInt(post_id, 10);
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid post ID');
+    }
+    return this.postService.remove(id);
   }
 
   @Post(':id/like')
   addLike(@Param('id') post_id: string) {
-    return this.postService.addLike(+post_id);
+    const id = parseInt(post_id, 10);
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid post ID');
+    }
+    return this.postService.addLike(id);
   }
 }
