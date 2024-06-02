@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth.module';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
-import { Comment } from './comment.entity';
-import { PostModule } from './post.module';
-import { Post } from './post.entity';
-import { CommentModule } from './comment.module';
+import { Comment } from './comment/comment.entity';
+import { PostModule } from './post/post.module';
+import { Post } from './post/post.entity';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
