@@ -10,7 +10,7 @@ export class Post {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   @Column({ default: 0 })
