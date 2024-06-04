@@ -1,4 +1,4 @@
-// subscription.entity.ts
+
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 

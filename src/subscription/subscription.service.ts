@@ -1,5 +1,3 @@
-// subscription.service.ts
-
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -28,5 +26,10 @@ export class SubscriptionService {
 
   async remove(id: number): Promise<void> {
     await this.subscriptionRepository.delete(id);
+  }
+
+  async findByUserIdAndPostId(userId: number, postId: number): Promise<Subscription> {
+    const where: any = { user_id: userId, post_id: postId }; // Використовуємо any для уникнення помилки типу
+    return this.subscriptionRepository.findOne({ where });
   }
 }

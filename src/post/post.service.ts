@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from './post.entity';
@@ -17,14 +17,18 @@ export class PostService {
     return this.postsRepository.find({ relations: ['user', 'comments'] });
   }
 
-  findOne(post_id: number): Promise<Post> {
+  async findOne(post_id: number): Promise<Post> {
     if (isNaN(post_id)) {
       throw new BadRequestException('Invalid post ID');
     }
-    return this.postsRepository.findOne({ where: { post_id }, relations: ['user', 'comments'] });
+    const post = await this.postsRepository.findOne({ where: { post_id }, relations: ['user', 'comments'] });
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
   }
 
-  async create(createPostDto: CreatePostDto, user:User): Promise<Post> {
+  async create(createPostDto: CreatePostDto, user: User): Promise<Post> {
     const post = this.postsRepository.create({...createPostDto, user});
     return this.postsRepository.save(post);
   }

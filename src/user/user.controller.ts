@@ -6,13 +6,13 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard('jwt')) // Застосовуємо guard для захисту маршруту
+  @UseGuards(AuthGuard('jwt')) 
   @Get()
   async getCurrentUser(@Req() req) {
-    return req.user; // Повертаємо дані поточного користувача
+    return req.user; 
   }
 
-  @Get('all') // Маршрут для отримання всіх користувачів (необов'язково)
+  @Get('all') 
   async getUsers() {
     return this.userService.getUsers();
   }

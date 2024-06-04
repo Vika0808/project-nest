@@ -26,7 +26,7 @@ import { Subscription } from './subscription/subscription.entity';
     UserModule,
     PostModule,
     CommentModule,
-    SubscriptionModule, // Додайте підключення модуля підписок
+    SubscriptionModule, 
   ],
   providers: [], 
 })
