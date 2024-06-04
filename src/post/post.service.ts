@@ -29,23 +29,38 @@ export class PostService {
   }
 
   async create(createPostDto: CreatePostDto, user: User): Promise<Post> {
-    const post = this.postsRepository.create({...createPostDto, user});
+    const post = this.postsRepository.create({ ...createPostDto, user });
     return this.postsRepository.save(post);
   }
 
-  async update(post_id: number, updatePostDto: UpdatePostDto): Promise<Post> {
+  async update(post_id: number, updatePostDto: UpdatePostDto, user: User): Promise<Post> {
     if (isNaN(post_id)) {
       throw new BadRequestException('Invalid post ID');
     }
-    await this.postsRepository.update(post_id, updatePostDto);
-    return this.findOne(post_id);
+    const post = await this.findOne(post_id);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    if (post.user.user_id !== user.user_id) {
+      throw new BadRequestException('You can only edit your own posts');
+    }
+    Object.assign(post, updatePostDto);
+    await this.postsRepository.save(post);
+    return post;
   }
 
-  async remove(post_id: number): Promise<void> {
+  async remove(post_id: number, user: User): Promise<void> {
     if (isNaN(post_id)) {
       throw new BadRequestException('Invalid post ID');
     }
-    await this.postsRepository.delete(post_id);
+    const post = await this.findOne(post_id);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    if (post.user.user_id !== user.user_id) {
+      throw new BadRequestException('You can only delete your own posts');
+    }
+    await this.postsRepository.remove(post);
   }
 
   async addLike(post_id: number): Promise<void> {

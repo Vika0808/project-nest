@@ -7,7 +7,10 @@ import { UserService } from 'src/user/user.service';
 
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService, private readonly userService: UserService) {}
+  constructor(
+    private readonly postService: PostService, 
+    private readonly userService: UserService
+  ) {}
 
   @Get()
   findAll() {
@@ -22,31 +25,34 @@ export class PostController {
     }
     return this.postService.findOne(id);
   }
+
   @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createPostDto: CreatePostDto, @Request() req) {
-    console.log(req.user)
-    const user = await this.userService.findByUsername(req.user.username)
+    const user = await this.userService.findByUsername(req.user.username);
     return this.postService.create(createPostDto, user);
   }
-  
+
   @UseGuards(AuthGuard)
   @Put(':id')
-  update(@Param('id') post_id: string, @Body() updatePostDto: UpdatePostDto) {
+  async update(@Param('id') post_id: string, @Body() updatePostDto: UpdatePostDto, @Request() req) {
     const id = parseInt(post_id, 10);
     if (isNaN(id)) {
       throw new BadRequestException('Invalid post ID');
     }
-    return this.postService.update(id, updatePostDto);
+    const user = await this.userService.findByUsername(req.user.username);
+    return this.postService.update(id, updatePostDto, user);
   }
+
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') post_id: string) {
+  async remove(@Param('id') post_id: string, @Request() req) {
     const id = parseInt(post_id, 10);
     if (isNaN(id)) {
       throw new BadRequestException('Invalid post ID');
     }
-    return this.postService.remove(id);
+    const user = await this.userService.findByUsername(req.user.username);
+    return this.postService.remove(id, user);
   }
 
   @Post(':id/like')
