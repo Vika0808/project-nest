@@ -1,6 +1,7 @@
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateSubscriptionDto {
-    readonly topic: string;
-    readonly user_id: number;
-  }
-  
+  @IsNotEmpty()
+  @IsNumber()
+  subscribed_to_user_id: number;
+}

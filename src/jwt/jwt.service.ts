@@ -1,18 +1,17 @@
 // import { Module } from '@nestjs/common';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { JwtModule } from '@nestjs/jwt'; // Додано імпорт JwtModule
-// import { Post } from '../post/post.entity';
-// import { Comment } from '../comment/comment.entity'; 
-// import { PostService } from '../post/post.service';
-// import { PostController } from '../post/post.controller';
-// import { JwtAuthGuard } from '../jwt/jwt-auth.guard'; // Додано імпорт JwtAuthGuard
+// import { JwtModule } from '@nestjs/jwt';
+// import { AuthService } from '../auth/auth.service';
+// import { AuthGuard } from '../auth/auth.guard';
+// import { JwtStrategy } from './jwt.strategy';
 
 // @Module({
 //   imports: [
-//     TypeOrmModule.forFeature([Post, Comment]),
-//     JwtModule.register({}), // Додано реєстрацію JwtModule
+//     JwtModule.register({
+//       secret: 'your-secret-key',
+//       signOptions: { expiresIn: '60s' },
+//     }),
 //   ],
-//   providers: [PostService, JwtAuthGuard], // Додано JwtAuthGuard до providers
-//   controllers: [PostController],
+//   providers: [AuthService, AuthGuard, JwtStrategy],
+//   exports: [AuthService, AuthGuard],
 // })
-// export class PostModule {}
+// export class AuthModule {}
