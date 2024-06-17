@@ -28,16 +28,18 @@ export class SubscriptionController {
   @Get()
   findAll(@Request() req): Promise<Subscription[]> {
     const user = req.user;
+    
     if (!user) {
       throw new BadRequestException('User not authenticated');
     }
-    return this.subscriptionService.findAllForUser(user.user_id);
+    return this.subscriptionService.findAllForUser(user.sub);
   }
 
   @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req): Promise<Subscription> {
     const user = req.user;
+    
     if (!user) {
       throw new BadRequestException('User not authenticated');
     }
@@ -71,7 +73,11 @@ export class SubscriptionController {
     }
     const userId = body.user_id;
     const subscriptions = await this.subscriptionService.findAllForUser(user.user_id);
-    const isSubscribed = subscriptions.some(subscription => subscription.subscribedToUser.user_id === userId);
+    const isSubscribed = subscriptions.some(subscription => {
+      return subscription.subscribedToUser?.user_id === userId;
+    } 
+      
+    );
     return { isSubscribed };
   }
 }

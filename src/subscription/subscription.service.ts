@@ -15,22 +15,23 @@ export class SubscriptionService {
   ) {}
 
   async create(createSubscriptionDto: CreateSubscriptionDto, user: User): Promise<Subscription> {
-    console.log(user);
+    
     const subscribedToUser = await this.userService.findOne(createSubscriptionDto.subscribed_to_user_id);
     if (!subscribedToUser) {
       throw new NotFoundException('User to subscribe to not found');
       
     }
-    console.log(subscribedToUser);
+    
     const subscription = this.subscriptionRepository.create({
       user,
       subscribedToUser,
     });
-    console.log(subscription);
+    
     return this.subscriptionRepository.save(subscription);
   }
 
   async findAllForUser(userId: number): Promise<Subscription[]> {
+    
     return this.subscriptionRepository.find({
       where: { user: { user_id: userId } },
       relations: ['user', 'subscribedToUser'],

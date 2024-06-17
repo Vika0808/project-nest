@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '../dto/login-user.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +14,7 @@ export class AuthService {
     const user = await this.userService.findByUsername(username);
     
     if (user && pass === user.password) {  
-      const { password, ...result } = user;
-      return result;
+      return user; 
     }
     return null;
   }
@@ -30,9 +28,12 @@ export class AuthService {
     }
 
     console.log(`Ви успішно увійшли у свій акаунт, користувач ${user.username} з ID ${user.user_id}`);
-    const payload = { username: user.username, sub: user.user_id };
+    
+    
+    const payload = { username: user.username, sub: user.user_id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
+      user: user,
     };
   }
 }
